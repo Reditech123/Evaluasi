@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ruang Dosen | Ujian Online</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="dosen.css">
+</head>
+<body class="dosen">
+  <header class="bilah" id="bilah" hidden>
+    <a href="#/" class="merek">
+      <span class="masuk-bulatan kecil" aria-hidden="true"><span></span><span class="isi"></span><span></span></span>
+      Ruang Dosen
+    </a>
+    <div class="bilah-kanan">
+      <span class="redup" id="email-dosen"></span>
+      <button class="tombol kecil garis" id="tombol-keluar">Keluar</button>
+    </div>
+  </header>
+  <main id="isi" class="isi-dosen"></main>
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+  <script src="config.js"></script>
+  <script src="bantu.js"></script>
+  <script src="diagnostik.js"></script>
+  <script src="pembuat.js"></script>
+  <script src="dosen.js"></script>
+</body>
+</html>

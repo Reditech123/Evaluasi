@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ujian Online</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- ============ LAYAR MASUK ============ -->
+  <main id="layar-masuk" class="layar masuk" hidden>
+    <div class="masuk-kartu">
+      <div class="masuk-kepala">
+        <div class="masuk-bulatan" aria-hidden="true"><span></span><span></span><span class="isi"></span><span></span></div>
+        <h1>Masuk ujian</h1>
+        <p class="redup" id="nama-institusi"></p>
+      </div>
+      <form id="form-masuk" novalidate>
+        <label class="isian">
+          <span>Kode ujian</span>
+          <input name="kode" autocomplete="off" autocapitalize="characters" spellcheck="false" required placeholder="mis. LIT01">
+        </label>
+        <label class="isian">
+          <span>Nama lengkap</span>
+          <input name="nama" autocomplete="name" required>
+        </label>
+        <div class="baris-dua">
+          <label class="isian">
+            <span>NIM</span>
+            <input name="nim" inputmode="numeric" autocomplete="off" required>
+          </label>
+          <label class="isian">
+            <span>Kelas <em>(opsional)</em></span>
+            <input name="kelas" autocomplete="off" placeholder="mis. PGMI C">
+          </label>
+        </div>
+        <p class="pesan-galat" id="galat-masuk" role="alert" hidden></p>
+        <button type="submit" class="tombol utama lebar" id="tombol-masuk">Mulai ujian</button>
+        <p class="catatan">Waktu mulai berjalan begitu Anda menekan <strong>Mulai ujian</strong>. Jawaban tersimpan otomatis. Jika koneksi terputus, masuk lagi dengan NIM yang sama untuk melanjutkan.</p>
+      </form>
+    </div>
+  </main>
+
+  <!-- ============ LAYAR UJIAN ============ -->
+  <div id="layar-ujian" class="layar ujian" hidden>
+    <header class="kepala-ujian">
+      <div class="identitas">
+        <strong id="judul-ujian"></strong>
+        <span class="redup" id="identitas-peserta"></span>
+      </div>
+      <div class="kepala-kanan">
+        <span class="status-simpan" id="status-simpan" aria-live="polite"></span>
+        <div class="timer" id="timer" role="timer" aria-label="Sisa waktu">--:--</div>
+        <button class="tombol garis" id="tombol-daftar" aria-expanded="false" aria-controls="panel-daftar">Daftar soal</button>
+      </div>
+    </header>
+
+    <div class="tab-hp" id="tab-hp" role="tablist" hidden>
+      <button role="tab" data-tab="bacaan" aria-selected="false">Bacaan</button>
+      <button role="tab" data-tab="soal" aria-selected="true">Soal</button>
+    </div>
+
+    <div class="badan-ujian" id="badan-ujian">
+      <section class="panel-bacaan" id="panel-bacaan" aria-label="Bacaan" hidden>
+        <div class="alat-bacaan">
+          <span class="redup" id="label-bacaan"></span>
+          <div class="ukuran-huruf" role="group" aria-label="Ukuran huruf bacaan">
+            <button class="tombol kecil garis" data-huruf="-1" aria-label="Perkecil huruf">A−</button>
+            <button class="tombol kecil garis" data-huruf="1" aria-label="Perbesar huruf">A+</button>
+          </div>
+        </div>
+        <article class="bacaan" id="isi-bacaan"></article>
+      </section>
+
+      <section class="panel-soal" id="panel-soal" aria-live="polite">
+        <div class="soal-kepala">
+          <span class="nomor-soal" id="nomor-soal"></span>
+          <span class="petunjuk redup" id="petunjuk-soal"></span>
+        </div>
+        <div id="isi-soal"></div>
+      </section>
+    </div>
+
+    <footer class="kaki-ujian">
+      <button class="tombol garis" id="tombol-sebelum">Sebelumnya</button>
+      <label class="ragu-saklar">
+        <input type="checkbox" id="cek-ragu">
+        <span>Ragu-ragu</span>
+      </label>
+      <button class="tombol utama" id="tombol-berikut">Berikutnya</button>
+    </footer>
+
+    <aside class="panel-daftar" id="panel-daftar" hidden aria-label="Daftar soal">
+      <div class="daftar-kepala">
+        <h2>Daftar soal</h2>
+        <button class="tombol kecil garis" id="tutup-daftar">Tutup</button>
+      </div>
+      <div class="legenda">
+        <span><i class="bul"></i>Belum dijawab</span>
+        <span><i class="bul terisi"></i>Sudah dijawab</span>
+        <span><i class="bul ragu"></i>Ragu-ragu</span>
+      </div>
+      <div id="grid-soal"></div>
+      <button class="tombol utama lebar" id="tombol-kumpul">Kumpulkan jawaban</button>
+    </aside>
+    <div class="tirai" id="tirai-daftar" hidden></div>
+  </div>
+
+  <!-- ============ LAYAR HASIL ============ -->
+  <main id="layar-hasil" class="layar hasil" hidden>
+    <div class="hasil-kartu" id="isi-hasil"></div>
+  </main>
+
+  <!-- ============ MEMUAT ============ -->
+  <div id="layar-muat" class="layar muat"><p class="redup">Memuat…</p></div>
+
+  <!-- ============ DIALOG ============ -->
+  <dialog id="dialog-kumpul" class="dialog">
+    <h2>Kumpulkan jawaban?</h2>
+    <div id="ringkas-kumpul"></div>
+    <p class="redup">Setelah dikumpulkan, jawaban tidak bisa diubah lagi.</p>
+    <div class="dialog-aksi">
+      <button class="tombol garis" value="batal" id="batal-kumpul">Periksa lagi</button>
+      <button class="tombol utama" id="ya-kumpul">Kumpulkan sekarang</button>
+    </div>
+  </dialog>
+
+  <dialog id="dialog-peringatan" class="dialog peringatan">
+    <h2>Anda meninggalkan halaman ujian</h2>
+    <p id="teks-peringatan"></p>
+    <div class="dialog-aksi">
+      <button class="tombol utama" id="ok-peringatan">Kembali mengerjakan</button>
+    </div>
+  </dialog>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
